@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  ms-sql-server-linux:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    environment:
+        ACCEPT_EULA: "Y"
+        SA_PASSWORD: "Jko3va1D9821jhsvGD"
+        MSQL_PID: Express
+    ports:
+       - "1433:1433"       
+  customerservice:
+    image: ${DOCKER_REGISTRY-}customerservice
+    build:
+      context: .
+      dockerfile: Dockerfile
