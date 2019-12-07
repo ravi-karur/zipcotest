@@ -26,7 +26,7 @@
     - Request validation
         - Email format validation
     - Business validation
-        - Email already not exists 
+        - Email already exists - 400 Bad Request
 
 - Account Creation
    - Request validation
