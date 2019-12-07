@@ -1,0 +1,20 @@
+# This file is a template, and might need editing before it works on your project.
+docker-build-master:
+  # Official docker image.
+  image: docker:latest
+  stage: deploy
+  services:
+    - docker:dind
+  before_script:
+    - export DYNAMIC_ENV_VAR=ziptest
+  script:
+    - echo setting up env $DYNAMIC_ENV_VAR
+    - sudo apt-get install -y python-pip
+    - sudo pip install docker-compose
+    - sudo docker image prune -f
+    - sudo docker-compose -f docker-compose.yml build --no-cache
+    - sudo docker-compose -f docker-compose.yml up -d
+  only:
+    - master
+
+
