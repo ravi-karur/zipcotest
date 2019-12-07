@@ -1,3 +1,8 @@
+using CustomerApi.API.Common;
+using CustomerApi.Data;
+using CustomerApi.Data.Interfaces;
+using CustomerApi.Data.Repositories;
+using CustomerApi.Domain.Models;
 using CustomerApi.Service;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -6,12 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using CustomerApi.Data;
-using CustomerApi.Data.Interfaces;
-using CustomerApi.Data.Repositories;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-
 
 namespace CustomerService
 {
@@ -27,8 +26,16 @@ namespace CustomerService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString
+                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database
+                    = Configuration.GetSection("MongoConnection:Database").Value;
+            });
+
             services.AddControllers().AddNewtonsoftJson();
-            
+            services.AddHealthChecks();
             services.AddMediatR();            
             services.AddLogging();
             services.AddCustomerServicesDependencies();
@@ -63,7 +70,14 @@ namespace CustomerService
 
             app.UseRouting();
 
+            app.UseCustomExceptionHandler();
+
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+            });
 
             app.UseEndpoints(endpoints =>
             {

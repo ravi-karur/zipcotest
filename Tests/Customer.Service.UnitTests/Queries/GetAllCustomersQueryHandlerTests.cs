@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
+using CustomerApi.Data.Interfaces;
 using CustomerApi.Data.Persistence;
-using CustomerApi.Domain.Dtos;
+using CustomerApi.Domain.Models;
 using CustomerApi.Domain.Queries;
 using CustomerApi.Service.Handlers.Query;
 using CustomerApi.Service.UnitTests.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,7 +18,7 @@ namespace CustomerApi.Service.UnitTests.Queries
     [Collection("QueryCollection")]
     public class GetAllCustomersQueryHandlerTests
     {
-        private readonly CustomerDbContext _context;
+        private readonly DbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllCustomersQueryHandler> _logger;
 
@@ -35,33 +34,36 @@ namespace CustomerApi.Service.UnitTests.Queries
         [Fact]
         public async Task GetAllCustomerDetailTests()
         {
-            var sut = new GetAllCustomersQueryHandler(_logger, _mapper, _context);
+            var mockedCustomer1 = new Customer("test1", "test1@test.com.au", 10000, 1000);
+            var mockedCustomer2 = new Customer("test2", "test2@test.com.au", 20000, 2000);
 
-            var result = await sut.Handle(null, CancellationToken.None);
+            var customerList = new List<Customer>() { mockedCustomer1, mockedCustomer2 };
+
+            var mock = new Mock<ICustomerRepository>();
+            mock.Setup(srv => srv.GetAllCustomers()).ReturnsAsync(customerList);
+
+            var sut = new GetAllCustomersQueryHandler(_logger, _mapper, mock.Object);
+
+            var result = await sut.Handle(new GetAllCustomersQuery(), CancellationToken.None);
 
             var sortedResult = result.OrderBy(x => x.Name).ToList();
 
-            //foreach ( var )
             
             Assert.NotNull(sortedResult);
-            Assert.Equal(3, sortedResult.Count);
+            Assert.Equal(2, sortedResult.Count);
             Assert.Collection(sortedResult,
                     item =>
                     {
-                        Assert.Equal("Test1", item.Name);
-                        Assert.Equal("Test1@test.com.au", item.Email);
+                        Assert.Equal("test1", item.Name);
+                        Assert.Equal("test1@test.com.au", item.Email);
                     },
                     item =>
                     {
-                        Assert.Equal("Test2", item.Name);
-                        Assert.Equal("Test2@test.com.au", item.Email);
-                    },
-                    item =>
-                    {
-                        Assert.Equal("Test3", item.Name);
-                        Assert.Equal("Test3@test.com.au", item.Email);
+                        Assert.Equal("test2", item.Name);
+                        Assert.Equal("test2@test.com.au", item.Email);
                     });
-            
+
+            mock.Verify(rep => rep.GetAllCustomers(), Times.Once);
 
         }
     }

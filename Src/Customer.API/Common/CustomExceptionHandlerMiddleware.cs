@@ -39,7 +39,7 @@ namespace CustomerApi.API.Common
             {
                 case ValidationException validationException:
                     code = HttpStatusCode.BadRequest;
-                    result = JsonConvert.SerializeObject(validationException.Failures);
+                    result = validationException.Message;
                     break;
                 case BadRequestException badRequestException:
                     code = HttpStatusCode.BadRequest;

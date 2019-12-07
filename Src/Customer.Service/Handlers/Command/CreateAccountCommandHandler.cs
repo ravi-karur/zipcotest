@@ -30,28 +30,24 @@ namespace CustomerApi.Service.Handlers.Command
         {
             try
             {
-                Customer customerDetail = _customerRepository.GetCustomerByEmail(request.Email);
+                Customer customerDetail = await _customerRepository.GetCustomerByEmail(request.Email);
 
                 if (customerDetail != null)
                 {
-                    if (_accountRepository.IsCustomerEligibleForAccount(customerDetail))
+                    if (_customerRepository.IsCustomerEligibleForAccount(customerDetail))
                     {
-                        var accountInfo = _accountRepository.GetAccountByCustomerId(customerDetail.Id);
+                        var accountInfo = await _accountRepository.GetAccountByEmail(customerDetail.Email);
 
-                        if (accountInfo is null)
+                        if (accountInfo == null)
                         {
-                            Account newAccount = new Account(request.Email, customerDetail.Id);
+                            Account newAccount = new Account(request.Email);
+                            newAccount.AccountNo = new Random(10000000).Next(10000000, 99999999);
                             newAccount.Active = true;
 
 
-                            _accountRepository.Add(newAccount);
-                            if (await _customerRepository.SaveChangesAsync() == 0)
-                            {
-                                throw new ApplicationException("Unable to save data");
-                            }
-                            var customerDto = _accountMap.Map<AccountDto>(newAccount);
+                            await _accountRepository.AddAccountAsync(newAccount);
 
-                            return customerDto;
+                            return _accountMap.Map<AccountDto>(newAccount);
                         }
                         else
                         {

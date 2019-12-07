@@ -1,16 +1,16 @@
 ﻿using CustomerApi.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CustomerApi.Data.Interfaces
 {
-    public interface IAccountRepository : IRepository<Account>
+    public interface IAccountRepository 
     {
-        public Account GetAccountByCustomerId(Guid customerId);
-        public Account GetAccountByEmail(string email);
+        public Task AddAccountAsync(Account customer);
+        
+        public Task<List<Account>> GetAllAccounts();
 
-        public bool IsCustomerEligibleForAccount(Customer customer);
+        public Task<Account> GetAccountByEmail(string email);
+
     }
 }

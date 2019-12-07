@@ -1,41 +1,38 @@
 ﻿using CustomerApi.Data.Interfaces;
-using CustomerApi.Data.Persistence;
-using CustomerApi.Domain.Common.Exceptions;
 using CustomerApi.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CustomerApi.Data.Repositories
 {
-    public class AccountRepository : Repository<Account>, IAccountRepository
+    public class AccountRepository : IAccountRepository
     {
         private const int CREDITLIMIT = 1000;
 
-        private ICustomerDbContext _customerDbContext;
-        
-        public AccountRepository(CustomerDbContext dbContext) : base(dbContext)
+        private readonly Persistence.DbContext _accountDbContext = null;
+
+        public AccountRepository(IOptions<Settings> settings)
         {
-            _customerDbContext = dbContext;
+            _accountDbContext = new Persistence.DbContext(settings);
         }
 
-        public Account GetAccountByCustomerId(Guid customerId)
+        public async Task AddAccountAsync(Account account)
         {
-            return _customerDbContext.Accounts.Where(a => a.CustomerId == customerId).FirstOrDefault();
+           await _accountDbContext.Accounts.InsertOneAsync(account);
         }
 
-        public Account GetAccountByEmail(string email)
+        public async Task<Account> GetAccountByEmail(string email)
         {
-            return _customerDbContext.Accounts.Where(a => a.Email == email).FirstOrDefault();
+            return await _accountDbContext.Accounts.AsQueryable().FirstOrDefaultAsync(a => a.Email == email.ToLower());  
         }
 
-        public bool IsCustomerEligibleForAccount(Customer customer)
+        public async Task<List<Account>> GetAllAccounts()
         {
-            
-            return (customer.MonthlyIncome - customer.MonthlyExpense) >= CREDITLIMIT ? true : false;
+            return await _accountDbContext.Accounts.AsQueryable().ToListAsync();
         }
     }
 }

@@ -7,8 +7,6 @@ using CustomerApi.Domain.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,19 +26,16 @@ namespace CustomerApi.Service.Handlers.Command
         }
         public async Task<CustomerDto> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            if (await _customerRepository.EmailExistAsync(request.Email))
+            var customerDetail = await _customerRepository.GetCustomerByEmail(request.Email);
+
+            if ( customerDetail != null)
             {
                 throw new BadRequestException($"Customer with {request.Email} already exists");
             }
 
-            var customer = new Customer(request.Name, request.Email, request.MonthlyIncome, request.MonthlyExpense);
+            var customer = new Customer(request.Name, request.Email.ToLower(), request.MonthlyIncome, request.MonthlyExpense);
 
-            _customerRepository.Add(customer);
-
-            if (await _customerRepository.SaveChangesAsync() == 0)
-            {
-                throw new ApplicationException("Unable to save data");
-            }
+            await _customerRepository.AddCustomerAsync(customer);
 
             var customerDto = _customerMap.Map<CustomerDto>(customer);
 

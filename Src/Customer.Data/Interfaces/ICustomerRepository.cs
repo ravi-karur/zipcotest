@@ -1,15 +1,16 @@
 ﻿using CustomerApi.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CustomerApi.Data.Interfaces
 {
-    public interface ICustomerRepository : IRepository<Customer>
+    public interface ICustomerRepository 
     {
-        Task<bool> EmailExistAsync(string email);
+        public Task AddCustomerAsync(Customer customer); 
+        public Task<Customer> GetCustomerByEmail(string email);
 
-        public Customer GetCustomerByEmail(string email);
+        public Task<List<Customer>> GetAllCustomers();
+
+        public bool IsCustomerEligibleForAccount(Customer customer);
     }
 }

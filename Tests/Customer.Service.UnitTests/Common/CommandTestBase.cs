@@ -1,11 +1,11 @@
-using System;
 using CustomerApi.Data.Persistence;
+using System;
 
 namespace CustomerApi.Service.UnitTests.Common
 {
     public class CommandTestBase : IDisposable
     {
-        protected readonly CustomerDbContext _context;
+        protected readonly DbContext _context;
 
         public CommandTestBase()
         {

@@ -1,9 +1,6 @@
 ﻿using CustomerApi.Data.Persistence;
-using CustomerApi.Domain.Models;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
-using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,14 +23,14 @@ namespace CustomerApi.API.Tests.Common
             return result;
         }
 
-        public static void InitializeDbForTests(CustomerDbContext context)
+        public static void InitializeDbForTests(DbContext context)
         {
-            context.Customers.AddRange(new Customer("Test1", "Test1@test.com.au", 10000, 1000) { Id = Guid.Parse("ACA5A74B-CD2C-441B-9795-632FBC0B05FB") },
-                new Customer("Test2", "Test2@test.com.au", 10000, 2000) { Id = Guid.Parse("ACA5A74B-CD2C-441B-9795-632FBC0B06FB") },
-                new Customer("TestWithNoBalance", "Test3@test.com.au", 10000, 10000) { Id = Guid.Parse("ACA5A74B-CD2C-441B-9795-632FBC0B07FB") });
+            //context.Customers.InsertOneAsync(new Customer("Test1", "Test1@test.com.au", 10000, 1000) ,
+            //    new Customer("Test2", "Test2@test.com.au", 10000, 2000),
+            //    new Customer("TestWithNoBalance", "Test3@test.com.au", 10000, 10000)) ;
 
             
-            context.SaveChanges();
+            //context.SaveChanges();
         }
     }
 }

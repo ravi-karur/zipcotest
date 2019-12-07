@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using CustomerApi.Service.Mappers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CustomerApi.Service.UnitTests.Mappings
 {

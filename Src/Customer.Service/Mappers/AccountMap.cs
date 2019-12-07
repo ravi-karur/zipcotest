@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using CustomerApi.Domain.Dtos;
 using CustomerApi.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CustomerApi.Service.Mappers
 {
@@ -17,8 +14,7 @@ namespace CustomerApi.Service.Mappers
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Account, Domain.Dtos.AccountDto>()
-                    .ForMember(dst => dst.AccountNo, opt => opt.MapFrom(src => src.AccountNo))
-                    .ForMember(dst => dst.customerId, opt => opt.MapFrom(src => src.CustomerId))
+                    .ForMember(dst => dst.AccountNo, opt => opt.MapFrom(src => src.AccountNo))                    
                     .ForMember(dst => dst.Email, opt => opt.MapFrom(src => src.Email));
             });
 
@@ -33,7 +29,6 @@ namespace CustomerApi.Service.Mappers
 
         public void Mapping(Profile profile) => profile.CreateMap<Domain.Models.Account, AccountDto>()
                     .ForMember(dst => dst.AccountNo, opt => opt.MapFrom(src => src.AccountNo))
-                    .ForMember(dst => dst.customerId, opt => opt.MapFrom(src => src.CustomerId))
                     .ForMember(dst => dst.Email, opt => opt.MapFrom(src => src.Email));
     }
 }
