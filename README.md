@@ -64,4 +64,5 @@ http://localhost:9000/health
 ## CI/CD - GitLab - Deploying to DigitalOcean droplet
 ```https://gitlab.com/ravi.karur/zipcotest/pipelines```
 
-## Realtime - Cloud Hosting use
+## Final result hosted on DigitalOcean cloud ( Enabled with Continous deployment )
+```http://157.245.173.234:9000/swagger/index.html```
