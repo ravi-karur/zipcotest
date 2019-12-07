@@ -17,6 +17,21 @@ Docker			 - Containerization
 - NoSQL:MongoDB which collections Customers and Accounts
 - Both Application are dockerized using docker-compose.yml
 
+## Test scenarios's coverd
+- Customer Creation
+   # Request validation
+        - Email formation validation
+   # Business validation
+        - Email already not exists 
+
+- Account Creation
+   # Request validation
+        - Email formation validation         
+   # Business validation
+        - Customer already exists , but has no account  - Create new Account
+        - Customer already exists , but do not have enough balance linit (1000) for ZipPay credit - 400 Bad Request
+        - Customer does not exists , 404 - Customer not found
+        
 
 ## Clone the repo
 
@@ -29,17 +44,13 @@ https://gitlab.com/ravi.karur/zipcotest.git
 
 
 ```
-
-docker-compose up
-
+docker-compose up -d
 ```
 
 *** Make sure to run below command before rerunning docker-compose up
 
 ```
-
 docker-compose down
-
 ```
 
 
