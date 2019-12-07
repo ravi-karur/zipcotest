@@ -13,12 +13,12 @@
 
 ## Solution Description
 
-- Solution of this challenge has been built using microservice based architecture and with support of CQRS and Repository Patterns. 
-- CQRS is used to acheive seperation of concern and should definetely be considered in the event based solutions. in this case, most of the business requirements are event based action, hence I feel it CQRS fits better. Also I chose to use MediatR which simplyfies the implementation of CQRS.
-- The Repository pattern is used to decouple the business logic and the data access layers in your application. It focuses on where data acccess layer and how data is persisted or retrieved.
-- NoSQL:MongoDB which collections Customers and Accounts
+- CustomerAPI built on microservice based architecture with CQRS and Repository Patterns. 
+- CQRS pattern used to acheive seperation of model for reading and writing data.
+- Repository pattern is used to decouple the business logic and the data access layers.
+- NoSQL:MongoDB with two collections (Customers and Accounts )
 - Both Api and Backend are dockerized using docker-compose.yml
-- GitLab pipelines yml used for CI/CD. ⚠  Basic CI/CD with master branch only. any check-ins to master will deploy the changes automatically.
+- GitLab pipelines(yml) used for CI/CD. ⚠  Basic CI/CD with master branch only. any check-ins to master will deploy the changes automatically.
 - GitLab runner and DigitalOcean droplet used for cloud hosting
 
 ## Test scenarios's coverd
@@ -37,7 +37,7 @@
         - Customer does not exists , 404 - Customer not found
         
 
-## Clone the repo
+## GitLab Repo
 
 ```https://gitlab.com/ravi.karur/zipcotest.git```
 
