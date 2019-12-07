@@ -5,6 +5,8 @@ docker-build-master:
   stage: deploy
   services:
     - docker:dind
+  tags:
+    - ziptest
   before_script:
     - export DYNAMIC_ENV_VAR=ziptest
   script:
