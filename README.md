@@ -1,12 +1,14 @@
 # Zip - Interview - Customer API
 
 ## Tech Stack
-- ASP.NET Core 3.0 - WebAPI
+- ASP.NET Core 3.0   - WebAPI
 - MongoDB			 - BackEnd - NoSQL DB
 - MediatR			 - CQRS Pattern
-- Xunit			 - Unit Tests
+- Xunit			     - Unit Tests
 - AutoMapper		 - Object Mapping
 - Docker			 - Containerization
+- GitLab CI\CD yml   - Git CI\CI pipeline yml with GitLab runner
+- DigitalOcean       - cloud hosting
 
 
 ## Solution Description
@@ -16,6 +18,8 @@
 - The Repository pattern is used to decouple the business logic and the data access layers in your application. It focuses on where data acccess layer and how data is persisted or retrieved.
 - NoSQL:MongoDB which collections Customers and Accounts
 - Both Api and Backend are dockerized using docker-compose.yml
+- GitLab pipelines yml used for CI/CD. ⚠  Basic CI/CD with master branch only. any check-ins to master will deploy the changes automatically.
+- GitLab runner and DigitalOcean droplet used for cloud hosting
 
 ## Test scenarios's coverd
 - Customer Creation
@@ -35,39 +39,29 @@
 
 ## Clone the repo
 
-```
-https://gitlab.com/ravi.karur/zipcotest.git
- 
-```
+```https://gitlab.com/ravi.karur/zipcotest.git```
 
-## To Build and deploy the app , open the preferred command prompt and run docker-compose . Below example is for windows command prompt
-
-
+## To Build and deploy the app in LOCAL 
+Open the preferred command prompt and run docker-compose. ⚠ Below example is for windows command prompt
 ```
 docker-compose up -d
 ```
-
-*** Make sure to run below command before rerunning docker-compose up
-
+⚠ Make sure to run below command before rerunning docker-compose up
 ```
 docker-compose down
 ```
-
-
 ## Check Health 
 ⚠ first run could take few mintutes to pull images and start container
 ```
 http://localhost:9000/health
 
 ```
-
-
 ## Use Swagger to Test the application behaviour
 
 ⚠ Usetry it out option
-```
-http://localhost:9000/swagger/index.html
+```http://localhost:9000/swagger/index.html```
 
-```
+## CI/CD - GitLab - Deploying to DigitalOcean droplet
+```https://gitlab.com/ravi.karur/zipcotest/pipelines```
 
-
+## Realtime - Cloud Hosting use
